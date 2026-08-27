@@ -1,0 +1,22 @@
+`timescale 1ns / 1ps
+
+module register( 
+input clk, reset, enable, direction, serial_in, 
+output reg [7:0]q);
+
+always @(posedge clk) begin
+
+if ( reset )
+q <= 8'b00000000;
+
+else if ( enable == 0)
+q <= q;
+
+else if ( direction == 1)
+q <= {serial_in,q[7:1]}; //right shift
+
+else if ( direction == 0)
+q <= {q[6:0],serial_in}; //left shift
+
+end
+endmodule
