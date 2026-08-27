@@ -1,0 +1,39 @@
+`timescale 1ns / 1ps
+
+module test;
+reg clk, reset, enable, direction, serial_in;
+wire [7:0]q;
+
+register abc( .clk(clk), .reset(reset), .enable(enable), 
+.direction(direction), .serial_in(serial_in), .q(q));
+
+always 
+#5 clk = ~ clk;
+
+initial begin
+
+clk = 0;
+reset = 0;
+enable = 0;
+direction = 0;
+serial_in = 0;
+
+#10;
+reset = 1;enable = 1; direction = 1;
+serial_in = 1;
+
+#10;
+enable = 0;
+
+#10; 
+enable = 1; direction = 0;
+serial_in = 1;
+
+#50 $finish;
+end
+
+initial begin
+$monitor(" time = %0t , reset = %b, enable = %b, direction = %b,serial_in = %b, q = %b",$time,reset,enable,direction,serial_in,q);
+end
+
+endmodule
